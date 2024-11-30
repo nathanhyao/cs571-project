@@ -99,8 +99,8 @@ def explore_placements(items, grid, index, best_arrangement):
     explore_placements(items, grid, index + 1, best_arrangement)
 
 def main():
-    fridge_width = 6   # Number of columns (x-axis)
-    fridge_height = 6  # Number of rows (y-axis)
+    fridge_width = 10   # Number of columns (x-axis)
+    fridge_height = 10  # Number of rows (y-axis)
     # TODO: Apply heuristics for performance; infeasible execution time for dimensions 12x12 and above
 
     # Create Grid representing fridge space
