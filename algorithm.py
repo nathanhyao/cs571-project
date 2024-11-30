@@ -1,8 +1,11 @@
-import copy
+
 import time
+import copy
 from visualize import visualize
 from items import items_1
 from itertools import permutations, product
+from greedy import greedy_placement
+from heuristic import explore_placements
 
 # Define the Grid class
 class Grid:
@@ -38,9 +41,8 @@ class Grid:
 
     def copy(self):
         new_grid = Grid(self.width, self.height)
-        new_grid.cells = [row[:] for row in self.cells] # Deep copy of own grid
+        new_grid.cells = [row[:] for row in self.cells]  # Deep copy of own grid
         return new_grid
-    
 # Objective function
 def calculate_objective(items, grid_height):
     total_score = 0
@@ -64,15 +66,15 @@ def calculate_objective(items, grid_height):
     return total_score
 
 # Recursive function to explore all possible placements
-def explore_placements(items, grid, index, best_arrangement):
+def exhaustive_explore_placements(items, grid, index, heuristic_arragement):
     if index == len(items):
         # Base case: all items have been processed
         current_score = calculate_objective(items, grid.height)
-        if current_score > best_arrangement['score']:
+        if current_score > heuristic_arragement['score']:
             # Update best arrangement
-            best_arrangement['score'] = current_score
-            best_arrangement['grid'] = grid.copy()
-            best_arrangement['items'] = copy.deepcopy(items)
+            heuristic_arragement['score'] = current_score
+            heuristic_arragement['grid'] = grid.copy()
+            heuristic_arragement['items'] = copy.deepcopy(items)
         return
 
     item = items[index]
@@ -88,7 +90,7 @@ def explore_placements(items, grid, index, best_arrangement):
                     item.placed = True
                     item.position = (x, y)
                     # Recurse to next item
-                    explore_placements(items, grid, index + 1, best_arrangement)
+                    exhaustive_explore_placements(items, grid, index + 1, heuristic_arragement)
                     # Backtrack
                     grid.remove_item(item, x, y)
                     item.placed = False
@@ -96,20 +98,86 @@ def explore_placements(items, grid, index, best_arrangement):
     # Option to not place the item
     item.placed = False
     item.position = None
-    explore_placements(items, grid, index + 1, best_arrangement)
+    exhaustive_explore_placements(items, grid, index + 1, heuristic_arragement)
 
 def main():
     fridge_width = 10   # Number of columns (x-axis)
     fridge_height = 10  # Number of rows (y-axis)
-    # TODO: Apply heuristics for performance; infeasible execution time for dimensions 12x12 and above
 
     # Create Grid representing fridge space
-    grid = Grid(fridge_width, fridge_height)
+    grid1 = Grid(fridge_width, fridge_height)
 
     # Define the items
     items = items_1
 
-    # Define object to track details of best arrangement
+################################## Greedy search ##################################################
+    for item in items:
+        item.priority = item.importance 
+        item.placed = False
+        item.position = None
+
+    # Sort items by priority
+    items.sort(key=lambda x: x.priority, reverse=True)
+
+    # Greedy algorithm
+    start_time = time.time()
+    greedy_placement(items, grid1)
+    greedy_time = time.time() - start_time
+    greedy_score = calculate_objective(items, grid1.height)
+
+    print(f"Greedy Algorithm Time: {greedy_time} seconds")
+    print(f"Greedy Algorithm Score: {greedy_score}\n")
+    print("Greedy Item Placements:")
+    for item in items:
+        if item.placed:
+            print(f"Item '{item.name}' placed at {item.position} with rotation {item.rotation} degrees.")
+        else:
+            print(f"Item '{item.name}' was not placed.")
+    print("\nGrid Layout:")
+    for row in grid1.cells:
+        print(' '.join([str(cell) if cell is not None else '.' for cell in row]))
+    print()
+
+################################## Heuristic Search ##################################################
+    for item in items:
+        item.placed = False
+        item.position = None
+
+    heuristic_arragement = {
+        'score': float('-inf'),
+        'grid': None,
+        'items': None
+    }
+
+    start_time = time.time()
+
+    # Start exploring placements with heuristic
+    explore_placements(items, Grid(fridge_width, fridge_height), 0, heuristic_arragement, 0)
+    heuristic_time = time.time() - start_time
+
+    print(f"Heuristic Search Time: {heuristic_time} seconds")
+    print(f"Heuristic Search Score: {heuristic_arragement['score']}\n")
+    print("Heuristic Item Placements:")
+    for item in heuristic_arragement['items']:
+        if item.placed:
+            print(f"Item '{item.name}' placed at {item.position} with rotation {item.rotation} degrees.")
+        else:
+            print(f"Item '{item.name}' was not placed.")
+    print("\nGrid Layout:")
+    for row in heuristic_arragement['grid'].cells:
+        print(' '.join([str(cell) if cell is not None else '.' for cell in row]))
+    print()
+
+    visualize({'grid': grid1, 'items': items})  # Greedy result
+    visualize(heuristic_arragement)  # Heuristic search result
+
+################################## Exhaustive Search ##################################################
+    grid2 = Grid(fridge_width, fridge_height)
+    
+    for item in items:
+        item.placed = False
+        item.position = None
+        
     best_arrangement = {
         'score': float('-inf'),
         'grid': None,
@@ -119,7 +187,7 @@ def main():
     start_time = time.time() # Begin measure execution time
 
     # Start exploring placements
-    explore_placements(items, grid, 0, best_arrangement)
+    exhaustive_explore_placements(items, grid2, 0, best_arrangement)
 
     print("--- %s seconds ---" % (time.time() - start_time))
 
@@ -134,10 +202,9 @@ def main():
     print("\nGrid Layout:")
     for row in best_arrangement['grid'].cells:
         print(' '.join([str(cell) if cell is not None else '.' for cell in row]))
-    print() #Newline
-    # Visualize
-    visualize(best_arrangement)
+    print()
 
+    visualize(best_arrangement)
 
 if __name__ == "__main__":
     main()
