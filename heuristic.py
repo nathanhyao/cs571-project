@@ -19,7 +19,6 @@ def explore_placements(items, grid, index, best_arrangement, current_score):
     if index == len(items):
         # Base case: all items have been processed
         if current_score > best_arrangement['score']:
-            # Update best arrangement
             best_arrangement['score'] = current_score
             best_arrangement['grid'] = grid.copy()
             best_arrangement['items'] = copy.deepcopy(items)

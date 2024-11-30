@@ -5,8 +5,7 @@ def greedy_placement(items, grid):
         for rotation in [0, 90]:
             item.rotation = rotation
             item_width, item_height = item.rotated_dimensions()
-            # Traverse grid positions from front to back (higher y to lower y)
-            for y in range(grid.height - item_height, -1, -1):  # Start from front
+            for y in range(grid.height - item_height, -1, -1):
                 for x in range(grid.width - item_width + 1):
                     if grid.can_place(item, x, y):
                         # Place item
@@ -14,12 +13,11 @@ def greedy_placement(items, grid):
                         item.placed = True
                         item.position = (x, y)
                         placed = True
-                        break  # Exit x loop
+                        break
                 if placed:
-                    break  # Exit y loop
+                    break
             if placed:
-                break  # Exit rotation loop
+                break
         if not placed:
-            # Item could not be placed
             item.placed = False
             item.position = None

@@ -173,7 +173,7 @@ def main():
 
 ################################## Exhaustive Search ##################################################
     grid2 = Grid(fridge_width, fridge_height)
-    
+
     for item in items:
         item.placed = False
         item.position = None
@@ -184,14 +184,10 @@ def main():
         'items': None
     }
 
-    start_time = time.time() # Begin measure execution time
+    start_time = time.time()
 
-    # Start exploring placements
     exhaustive_explore_placements(items, grid2, 0, best_arrangement)
-
     print("--- %s seconds ---" % (time.time() - start_time))
-
-    # Output the best arrangement
     print(f"\nBest Objective Score: {best_arrangement['score']}\n")
     print("Best Item Placements:")
     for item in best_arrangement['items']:
