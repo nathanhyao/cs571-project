@@ -5,15 +5,15 @@ class Item:
     def __init__(self, item_id, name, height, width, importance, tolerance, color='black'):
         self.item_id = item_id
         self.name = name
-        self.height = height
+        self.height = height    # Use inches for reference, for height and width
         self.width = width
         self.importance = importance
         self.tolerance = tolerance
         self.area = self.height * self.width
         self.placed = False
-        self.position = None  # (x, y)
-        self.rotation = 0     # 0 or 90 degrees
-        self.color = color  # Choose colors with https://htmlcolorcodes.com/
+        self.position = None    # (x, y)
+        self.rotation = 0       # 0 or 90 degrees
+        self.color = color      # You can choose colors at https://htmlcolorcodes.com/
 
     def rotated_dimensions(self):
         if self.rotation == 0:
@@ -27,20 +27,45 @@ class Item:
 
 # Predefined list of items
 predefined_items = [
-    Item(1, "Milk", 6, 6, 10, 2, '#f3f3f3'),
-    Item(2, "Eggs", 12, 4, 10, 3, '#2fb1d8'),
-    Item(3, "Butter", 6, 4, 7, 5, '#f5efd7'),
-    Item(4, "Cheese", 6, 4, 9, 4, '#efb350'),
-    Item(5, "Carrots", 12, 6, 7, 5, '#f57c30'),
-    Item(6, "Water", 3, 3, 4, 10, '#c7e0f0'),
-    Item(7, "Soda", 2, 2, 3, 10, '#f6e8a2'),
-    Item(8, "Cucumber", 8, 2, 5, 4, '#4ab956'),
-    Item(9, "Steak", 10, 8, 6, 2, '#ee917d'),
-    Item(10, "Chicken", 12, 9, 5, 2, '#e9c584'),
+
+    # High importance, low tolerance
+    Item(1, "Milk", 4, 4, 10, 2, '#f3f3f3'), # Small
+    Item(2, "Beef", 7, 4, 7, 2, '#c8653c'), # Medium
+    Item(3, "Lettuce", 8, 8, 8, 3, '#7ed347'), # Large
+    Item(4, "Eggs", 12, 4, 10, 3, '#2fb1d8'),
+
+    # High importance, high tolerance
+    Item(5, "Ketchup", 4, 2, 8, 9, '#f03030'), # Small
+    Item(6, "Pickles", 4, 4, 6, 8, '#2b892a'), # Medium
+    Item(7, "Beer (12-pack)", 12, 6, 9, 10, '#654540'), # Large
+    
+    # Low importance, low tolerance
+    Item(8, "Butter", 4, 1, 4, 4, '#f5efd7'),
+    Item(9, "Cheese", 6, 4, 3, 3, '#efb350'),
+    Item(10, "Carrots", 12, 6, 3, 4, '#f57c30'),
+
+    # Low importance, high tolerance
     Item(11, "Hot Sauce", 2, 2, 5, 10, '#c82831'),
-    Item(12, "Ketchup", 4, 4, 8, 9, '#f03030'),
+    Item(12, "Water", 3, 3, 4, 10, '#c7e0f0'),
+    Item(13, "Sodas", 6, 4, 3, 10, '#f6e8a2'),
+
+    # Misc.
+    Item(14, "Cucumber", 8, 2, 5, 4, '#4ab956'),
+    Item(15, "Steak", 10, 8, 6, 2, '#ee917d'),
+    Item(16, "Chicken", 12, 9, 5, 2, '#e9c584'),
+    Item(17, "Apple", 3, 3, 1, 10, '#f03030'),
 ]
 
-# Select some items based on their ids
-selected = {1,2,11,6,8,12}
-items_1 = list(filter(lambda item: item.item_id in selected, predefined_items))
+# Select items based on their ID
+item_set_1 = {1,2,11,6,8,12}
+item_set_2 = {1,2,3,4,5,6,7,8,9,10}
+item_set_3 = {}
+
+# For testing, choose item set by changing item_set_x to desired variable
+selected_items = list(filter(lambda item: item.item_id in item_set_2, predefined_items))
+
+test_details = {
+    'items': selected_items,
+    'fridge_width': 20,
+    'fridge_height': 20,
+}

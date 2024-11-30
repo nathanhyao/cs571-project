@@ -33,7 +33,7 @@ def visualize(arrangement):
         rgba_grid.append(rgba_row)
     
     # Display color matrix; use blank colormap since colors are already defined
-    fig, ax = plt.subplots(figsize=(6, 9))
+    fig, ax = plt.subplots(figsize=(8, 8))
     ax.imshow(rgba_grid, aspect='equal')
 
     # Remove axis ticks
@@ -73,7 +73,7 @@ def visualize(arrangement):
         legend_handles.append(patch)
     # Add legend to the plot
     # ax.legend(handles=legend_handles, bbox_to_anchor=(1.05, 1), loc='best', borderaxespad=0.0)
-    ax.legend(handles=legend_handles, bbox_to_anchor=(0.5, -0.25), loc='lower center', borderaxespad=0.0)
+    ax.legend(handles=legend_handles, bbox_to_anchor=(1.05, 1), loc='best', borderaxespad=0.0)
 
     # Adjust layout to make room for the legend
     plt.tight_layout()

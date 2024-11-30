@@ -2,7 +2,7 @@
 import time
 import copy
 from visualize import visualize
-from items import items_1
+from items import test_details
 from itertools import permutations, product
 from greedy import greedy_placement
 from heuristic import explore_placements
@@ -101,14 +101,14 @@ def exhaustive_explore_placements(items, grid, index, heuristic_arragement):
     exhaustive_explore_placements(items, grid, index + 1, heuristic_arragement)
 
 def main():
-    fridge_width = 10   # Number of columns (x-axis)
-    fridge_height = 10  # Number of rows (y-axis)
+    fridge_width = test_details['fridge_width'] # Number of columns (x-axis)
+    fridge_height = test_details['fridge_height']  # Number of rows (y-axis)
 
     # Create Grid representing fridge space
     grid1 = Grid(fridge_width, fridge_height)
 
     # Define the items
-    items = items_1
+    items = test_details['items']
 
 ################################## Greedy search ##################################################
     for item in items:
