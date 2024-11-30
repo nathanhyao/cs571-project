@@ -13,7 +13,7 @@ class Item:
         self.placed = False
         self.position = None  # (x, y)
         self.rotation = 0     # 0 or 90 degrees
-        self.color = color
+        self.color = color  # Choose colors with https://htmlcolorcodes.com/
 
     def rotated_dimensions(self):
         if self.rotation == 0:
@@ -42,5 +42,5 @@ predefined_items = [
 ]
 
 # Select some items based on their ids
-selected = {1,2,4,6,9,12,11,5}
+selected = {1,2,11,6,8,12}
 items_1 = list(filter(lambda item: item.item_id in selected, predefined_items))

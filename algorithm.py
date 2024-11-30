@@ -44,15 +44,18 @@ class Grid:
 # Objective function
 def calculate_objective(items, grid_height):
     total_score = 0
-    K = 10  # Large penalty for unplaced items
+    K = 100  # Large penalty for unplaced items
     w1 = 7  # Weight for importance
     w2 = 3  # Weight for tolerance
     Y_max = grid_height - 1  # Maximum y-coordinate (0-based indexing)
 
     for item in items:
         if item.placed:
-            y_i = item.position[1]  # y-coordinate of item
-            importance_score = item.importance * (y_i / Y_max)
+            _, item_height = item.rotated_dimensions()
+            y_i = item.position[1] # y-coordinate of item
+
+            # (y_i + item_height - 1) to consider edge of item closest to front
+            importance_score = item.importance * ((y_i + item_height - 1) / Y_max)
             tolerance_score = item.tolerance * (1 - (y_i / Y_max))
             total_score += w1 * importance_score + w2 * tolerance_score
         else:
@@ -96,8 +99,8 @@ def explore_placements(items, grid, index, best_arrangement):
     explore_placements(items, grid, index + 1, best_arrangement)
 
 def main():
-    fridge_width = 10   # Number of columns (x-axis)
-    fridge_height = 10  # Number of rows (y-axis)
+    fridge_width = 6   # Number of columns (x-axis)
+    fridge_height = 6  # Number of rows (y-axis)
     # TODO: Apply heuristics for performance; infeasible execution time for dimensions 12x12 and above
 
     # Create Grid representing fridge space
@@ -113,25 +116,28 @@ def main():
         'items': None
     }
 
+    start_time = time.time() # Begin measure execution time
+
     # Start exploring placements
     explore_placements(items, grid, 0, best_arrangement)
 
+    print("--- %s seconds ---" % (time.time() - start_time))
+
     # Output the best arrangement
-    print(f"Best Objective Score: {best_arrangement['score']}")
+    print(f"\nBest Objective Score: {best_arrangement['score']}\n")
     print("Best Item Placements:")
     for item in best_arrangement['items']:
         if item.placed:
             print(f"Item '{item.name}' placed at {item.position} with rotation {item.rotation} degrees.")
         else:
             print(f"Item '{item.name}' was not placed.")
-    print("Grid Layout:")
+    print("\nGrid Layout:")
     for row in best_arrangement['grid'].cells:
         print(' '.join([str(cell) if cell is not None else '.' for cell in row]))
+    print() #Newline
     # Visualize
     visualize(best_arrangement)
 
 
 if __name__ == "__main__":
-    start_time = time.time() # Execution time
     main()
-    print("--- %s seconds ---" % (time.time() - start_time))
