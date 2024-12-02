@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.colors import to_rgba
 
-def visualize(arrangement):
+def visualize(arrangement, alg_type="Algorithm"):
     grid = arrangement['grid']
     items = arrangement['items']
 
@@ -56,10 +56,10 @@ def visualize(arrangement):
                 # Retrieve the item's name; fallback to ID if name not found
                 text = id_to_name.get(cell, str(cell))
                 # Add text annotation to the center of the cell
-                ax.text(j, i, text, ha='center', va='center', color='black', fontsize=8)
+                ax.text(j, i, text, ha='center', va='center', color='black', fontsize=5)
 
     # Set title
-    ax.set_title(f'Best Item Placements Found, {num_cols}x{num_rows} Grid', fontsize=12)
+    ax.set_title(f'{alg_type}: Best Arrangement Found, {num_cols}x{num_rows} Grid', fontsize=12)
 
     # Create legend handles
     legend_handles = []

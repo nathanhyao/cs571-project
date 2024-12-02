@@ -37,7 +37,7 @@ predefined_items = [
     # High importance, high tolerance
     Item(5, "Ketchup", 4, 2, 8, 9, '#f03030'), # Small
     Item(6, "Pickles", 4, 4, 6, 8, '#2b892a'), # Medium
-    Item(7, "Beer (12-pack)", 12, 6, 9, 10, '#654540'), # Large
+    Item(7, "Beers", 12, 6, 9, 10, '#c78982'), # Large
     
     # Low importance, low tolerance
     Item(8, "Butter", 4, 1, 4, 4, '#f5efd7'),
@@ -57,15 +57,15 @@ predefined_items = [
 ]
 
 # Select items based on their ID
-item_set_1 = {1,2,11,6,8,12}
+item_set_1 = {2,4,6,8,10,12}
 item_set_2 = {1,2,3,4,5,6,7,8,9,10}
-item_set_3 = {}
+item_set_3 = {1,3,5,7,9,11,13,15,17,2}
 
 # For testing, choose item set by changing item_set_x to desired variable
-selected_items = list(filter(lambda item: item.item_id in item_set_2, predefined_items))
+selected_items = list(filter(lambda item: item.item_id in item_set_1, predefined_items))
 
 test_details = {
     'items': selected_items,
-    'fridge_width': 20,
-    'fridge_height': 20,
+    'fridge_width': 10,
+    'fridge_height': 10,
 }

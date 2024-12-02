@@ -164,12 +164,13 @@ def main():
         else:
             print(f"Item '{item.name}' was not placed.")
     print("\nGrid Layout:")
+
     for row in heuristic_arragement['grid'].cells:
         print(' '.join([str(cell) if cell is not None else '.' for cell in row]))
     print()
 
-    visualize({'grid': grid1, 'items': items})  # Greedy result
-    visualize(heuristic_arragement)  # Heuristic search result
+    visualize({'grid': grid1, 'items': items}, "Greedy")  # Greedy result
+    visualize(heuristic_arragement, "Branch & Bound")  # Heuristic search result
 
 ################################## Exhaustive Search ##################################################
     grid2 = Grid(fridge_width, fridge_height)
@@ -200,7 +201,7 @@ def main():
         print(' '.join([str(cell) if cell is not None else '.' for cell in row]))
     print()
 
-    visualize(best_arrangement)
+    visualize(best_arrangement, "Exhaustive")
 
 if __name__ == "__main__":
     main()
